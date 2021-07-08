@@ -1,0 +1,17 @@
+<section>
+	<div>
+		<span id="date">{{ Today | date:'dd' }}</span>
+		<span id="month-year">
+			<div id="month">{{ Today | date:'MMM' }}</div>
+			<div id="year">{{ Today | date:'y' }}</div>
+		</span>
+	</div>
+
+	<span class="filler">
+		<i class="material-icons">done_all</i>
+	</span>
+
+	<div id="day">
+		<span>{{ Today | date:'EEEE' }}</span>
+	</div>
+</section>

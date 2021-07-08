@@ -1,0 +1,26 @@
+@import '~styles/variables';
+
+#progress {
+	height: 1.5rem;
+	width: 100%;
+	background-color: $shade;
+	margin-bottom: 1rem;
+	position: relative;
+
+	span {
+		height: 100%;
+    	display: block;
+		position:absolute;
+		top: 0;
+
+		&.paused {
+			background-color: $pause;
+		}
+		&.completed {
+			background-color: $go;
+		}
+		&.important {
+			background-color: $important;
+		}
+	}
+}
