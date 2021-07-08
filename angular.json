@@ -22,7 +22,7 @@
           "options": {
             "outputPath": "dist/ng-todo",
             "index": "src/index.html",
-            "main": "src/main.ts",
+            "main": "src/app/app.main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -31,7 +31,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles/styles.scss"
             ],
             "scripts": []
           },
@@ -99,7 +99,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles/styles.scss"
             ],
             "scripts": []
           }

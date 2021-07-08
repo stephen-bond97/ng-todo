@@ -12,7 +12,7 @@ export class TodoItemComponent {
 	public IsNewItem: boolean = false;
 
 	@Input()
-	public TodoItem: TodoItem = { Id: '', Title: '', Status: TodoItemStatus.Active };
+	public TodoItem: TodoItem = { Id: '', Title: '', Status: TodoItemStatus.Active, Modified: new Date() };
 
 	@Output()
 	public AddNewItem = new EventEmitter<string>();
@@ -33,7 +33,7 @@ export class TodoItemComponent {
 		this.addItem();
 	}
 
-	public HandleEnterKeyPress(event: KeyboardEvent): void {
+	public HandleEnterKeyPress(event: Event): void {
 
 		// remove focus from the text input (hides keyboard on mobile devices)
 		let inputField: HTMLInputElement = event.target as HTMLInputElement;
@@ -52,7 +52,7 @@ export class TodoItemComponent {
 			this.AddNewItem.emit(this.TodoItem.Title);
 
 			// reset the textbox
-			this.TodoItem = { Id: '', Title: '', Status: TodoItemStatus.Active };
+			this.TodoItem = { Id: '', Title: '', Status: TodoItemStatus.Active, Modified: new Date() };
 		}
 	}
 

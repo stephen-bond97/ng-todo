@@ -1,4 +1,4 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { TodoItemStatus } from 'src/enums';
 
@@ -8,29 +8,32 @@ export class StorageHelper {
 
 	private todoItems: TodoItem[];
 
-	public get TodoItems(): TodoItem[] {
-		if (!this.todoItems) {
-			this.todoItems = this.readLocalStorage();
+	/**
+	 *
+	 */
+	constructor() {
+		this.todoItems = this.readLocalStorage();
 
-			let today = new Date();
-			today.setHours(0, 0, 0, 0);
+		let today = new Date();
+		today.setHours(0, 0, 0, 0);
 
-			this.todoItems.forEach(item => {
-				if (today > new Date(item.Modified)) {
+		this.todoItems.forEach(item => {
+			if (today > new Date(item.Modified)) {
 
-					if (item.Status == TodoItemStatus.Paused) {
-						item.Status = TodoItemStatus.Active;
-					} else if (item.Status == TodoItemStatus.Completed) {
-						item.Status = TodoItemStatus.Removed;
-					}
+				if (item.Status == TodoItemStatus.Paused) {
+					item.Status = TodoItemStatus.Active;
+				} else if (item.Status == TodoItemStatus.Completed) {
+					item.Status = TodoItemStatus.Removed;
 				}
-			});
+			}
+		});
 
-			this.todoItems = this.todoItems.filter(item => item.Status != TodoItemStatus.Removed);
+		this.todoItems = this.todoItems.filter(item => item.Status != TodoItemStatus.Removed);
 
-			this.writeLocalStorage(this.todoItems);
-		}
+		this.writeLocalStorage(this.todoItems);
+	}
 
+	public get TodoItems(): TodoItem[] {
 		return this.todoItems;
 	}
 
@@ -38,7 +41,8 @@ export class StorageHelper {
 		let newItem: TodoItem = {
 			Id: this.generateId(),
 			Title: title,
-			Status: TodoItemStatus.Active
+			Status: TodoItemStatus.Active,
+			Modified: new Date()
 		};
 
 		this.TodoItems.push(newItem);
@@ -48,7 +52,11 @@ export class StorageHelper {
 	}
 
 	public UpdateItem(id: string, status: TodoItemStatus): void {
-		let itemToUpdate: TodoItem = this.TodoItems.find(item => item.Id == id);
+		let itemToUpdate = this.TodoItems.find(item => item.Id == id);
+
+		if (itemToUpdate === undefined) {
+			return;
+		}
 
 		if (itemToUpdate) {
 			if (status == TodoItemStatus.Removed) {
@@ -67,8 +75,13 @@ export class StorageHelper {
 	}
 
 	private readLocalStorage(): TodoItem[] {
-		let items: TodoItem[] = JSON.parse(localStorage.getItem('ng-todo-items'));
-		return (items) ? items : [];
+		let savedItems = localStorage.getItem('ng-todo-items');
+		if (savedItems != null) {
+			return JSON.parse(savedItems);
+		}
+		else {
+			return [];
+		}
 	}
 
 	private writeLocalStorage(items: TodoItem[]): void {
